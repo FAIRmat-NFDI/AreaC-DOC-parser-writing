@@ -3,8 +3,15 @@ site_description: |
   NOMAD documentation on how to write and extend parsers.
 site_author: FAIRmat consortium
 nav:
-  - Home: index.md
-  - Extending current parser: extend.md
+  - Overview: index.md
+  - Creating the shell for your parser: parser_shell.md
+  - Parser structure for computational parsers: computational.md
+  - Creating parser tests: parser_tests.md
+  - Creating a new parser project: new_parser_project.md
+  - References:
+    - Quick Start - parser setup: references/quick_parser_setup.md
+    - Quick Start - installing a development version of NOMAD: references/installing_nomad_dev.md
+    - Old Docs: references/old_docs.md
 theme:
   name: material
   palette:
@@ -38,3 +45,4 @@ markdown_extensions:
       generic: true
 extra_css:
   - stylesheets/extra.css
+
