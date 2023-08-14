@@ -5,12 +5,15 @@ site_author: FAIRmat consortium
 nav:
   - Overview: index.md
   - Creating the shell for your parser: parser_shell.md
-  - Parser structure for computational parsers: computational.md
+  - Parser structure for computation: computational.md
   - Creating parser tests: parser_tests.md
+  - Creating code-specific metainfo: code_specific_metainfo.md
   - Creating a new parser project: new_parser_project.md
   - References:
     - Quick Start - parser setup: references/quick_parser_setup.md
-    - Quick Start - installing a development version of NOMAD: references/installing_nomad_dev.md
+    - Quick Start - installing a development version of NOMAD: references/quick_installing_nomad_dev.md
+    - Quick Start - best practices for NOMAD development: references/quick_NOMAD_best_practices.md
+    - Examples - NOMAD's parser-matching interface: references/examples_parser_matching.md
     - Old Docs: references/old_docs.md
 theme:
   name: material

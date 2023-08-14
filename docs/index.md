@@ -26,7 +26,7 @@ The NOMAD parsers can be found within your local NOMAD git repo under
 * [eelsdb](https://github.com/nomad-coe/nomad-parser-eelsdb) - Parser for the EELS database (https://eelsdb.eu/; to be integrated in the database project).
 * [electronic](https://github.com/nomad-coe/electronic-parsers) - Parsers for output from electronic structure calculations, e.g., from Vasp, Fhiaims, etc.
 * [nexus](https://github.com/nomad-coe/nomad-parser-nexus) - Parsers for combining various instrument output formats and electronic lab notebooks.
-* [workflow](https://github.com/nomad-coe/workflow-parsers) -
+* [workflow](https://github.com/nomad-coe/workflow-parsers) - Parsers for output from codes that specialize in workflows, e.g., Aflow, FHI-vibes, QuantumEspressoPhonon, etc.
 
 Within each project folder you will find a `test/` directory, containing the [parser tests](parser_tests.md), and also a directory containing the parsers' source code,
 `<parserproject>parser` or `<parserproject>parsers`, depending on if one or more
@@ -44,7 +44,7 @@ to the NOMAD software. All current parser projects are available at [nomad-coe](
 (see also individual links above).
 
 You will first need to create new branches within *both* the NOMAD project and *also* within the corresponding
-parser project. Ideally, this should be done following the _best practices for NOMAD development_.
+parser project. Ideally, this should be done following the [best practices for NOMAD development](references/quick_NOMAD_best_practices.md).
 Here, we briefly outline the procedure:
 
 Create a new issue within the NOMAD project at [NOMAD gitlab](https://gitlab.mpcdf.mpg.de/nomad-lab/nomad-FAIR.git).
@@ -56,9 +56,9 @@ Click the `Create branch` button.
 
 Now, run the following commands in your local NOMAD directory:
 
-`git fetch --all` - sync with remote
+`git fetch --all` &nbsp;&nbsp;&nbsp;&nbsp; (to sync with remote)
 
-`git checkout origin/<new_branch_name> -b <new_branch_name>` - checkout the new branch and create a local copy of the branch
+`git checkout origin/<new_branch_name> -b <new_branch_name>` &nbsp;&nbsp;&nbsp;&nbsp; (to checkout the new branch and create a local copy of the branch)
 
 Unless you *just* installed the NOMAD development version, you should rerun `./scripts/setup_dev_env.sh`
 within the NOMAD directory to reinstall with the newest development branch.

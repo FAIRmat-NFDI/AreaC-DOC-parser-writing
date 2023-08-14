@@ -1,4 +1,4 @@
-# Parser structure for computational parsers
+# Parser structure for computation
 
 ## Overview of metadata organization for computation
 

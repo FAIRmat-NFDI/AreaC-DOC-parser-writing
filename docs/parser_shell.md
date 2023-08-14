@@ -73,7 +73,7 @@ The following are typical files found within a parser source directory:
         m_env = Environment()
         m_env.m_add_sub_section(Environment.packages, <parsername>.m_package)
 
-- `metainfo/<parser_name>.py` - contains [metainfo specific metadata definitions]().
+- `metainfo/<parser_name>.py` - contains [code-specific metadata definitions](code_specific_metainfo.md).
 
 - `nomad_plugin.yaml`
 
@@ -96,7 +96,7 @@ The following are typical files found within a parser source directory:
         parser_class_name: <parserproject>parsers.<parsername>.parser.<ParserName>Parser
         python_package: <parserproject>parsers.<parsername>
 
-- `parser.py` - the [parser source code]().
+- `parser.py` - the [parser source code](computational.md).
 
 - `README.md` - a short description of the functionality of this parser.
 
@@ -125,3 +125,4 @@ Here, `<args>` can be one or several of the following:
 - `mainfile_contents_dict={'__has_all_keys': ['<key1>', '<key2>'}),`
 - `parser_as_interface=` -
 
+You can find further information about this topic here: [Examples of parser-matching](references/examples_parser_matching.md)
