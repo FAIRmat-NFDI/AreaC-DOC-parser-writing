@@ -7,13 +7,15 @@ nav:
   - Creating the shell for your parser: parser_shell.md
   - Parser structure for computation: computational.md
   - Creating parser tests: parser_tests.md
-  - Creating code-specific metainfo: code_specific_metainfo.md
-  - Creating a new parser project: new_parser_project.md
+  - Creating new metainfo: creating_new_metainfo.md
   - References:
     - Quick Start - parser setup: references/quick_parser_setup.md
     - Quick Start - installing a development version of NOMAD: references/quick_installing_nomad_dev.md
     - Quick Start - best practices for NOMAD development: references/quick_NOMAD_best_practices.md
     - Examples - NOMAD's parser-matching interface: references/examples_parser_matching.md
+    - Examples - populating the NOMAD archive: references/examples_populating_archive.md
+    - Standard workflows in NOMAD: references/standard_workflows.md
+    - Advanced - creating a new parser project: references/advanced_new_parser_project.md
     - Old Docs: references/old_docs.md
 theme:
   name: material

@@ -3,7 +3,7 @@
 ## Overview of metadata organization for computation
 
 NOMAD stores all processed data in a well defined, structured, and machine readable format, known as the `archive`.
-The schema that defines the organization of (meta)data within the archive is known as the `metainfo`.
+The schema that defines the organization of (meta)data within the archive is known as the `MetaInfo`.
 More information can be found in the NOMAD docs: [An Introduction to Schemas and Structured Data in NOMAD](https://nomad-lab.eu/prod/v1/docs/schema/introduction.html).
 The following diagram is an overarching visualization of the most important archive sections for computational data:
 
@@ -40,12 +40,27 @@ attributes of the atoms involved in the calculation, e.g., atom types, positions
 `calculation` stores the output of the calculation, e.g., energy, forces, etc.
 
 The `workflow` section of the archive then stores information about the series of tasks performed
-to accumulate the (meta)data in the run section...
-
+to accumulate the (meta)data in the run section. The relevant input parameters for the workflow are
+stored in `method`, while the `results` section stores output from the workflow beyond observables
+of single configurations. For example, any ensemble-averaged quantity from a molecular dynamics
+simulation would be stored under `workflow/results`. Then, the `inputs`, `outputs`, and `tasks` sections
+are used to define the specifics of the workflow. For some [standard workflows](references/standard_workflows.md), e.g., geometry optimization and molecular
+dynamics, the NOMAD [normalizers]() <!-- TODO Link to normalizer docs  --> will automatically populate these specifics. The parser must only create the
+appropriate workflow section. <!-- TODO Should give an example somewhere -->
+For non-standard workflows, the parser (or more appropriately the corresponding normalizer) must
+populate these sections accordingly.
+More information about the structure of the workflow section, as well as instructions on how to upload custom workflows to link individual Entries
+in NOMAD, can be found in the [Workflow DOCS](https://fairmat-nfdi.github.io/AreaC-DOC-workflows/)
 
 ## Recommended parser layout
 
+The following represents the recommended core structure for a computational parser, <!-- TODO general comp. or just atomistic?? -->
+typically implemented within `<parserproject>/parser.py`.
+
 ### Imports
+
+The imports typically include the necessary generic python modules, the required MetaInfo
+classes from nomad, and additional nomad utilities, e.g., from `nomad.atomutils`.
 
 ```python
 <license>
@@ -97,13 +112,16 @@ class <Parsername>Parser:
 ```
 
 The main class for your parser, `<Parsername>Parser`, will contain the bulk of the parsing routine,
-described further below. It is generally useful to create a distinct class, `<Parsername><Mainfiletype>Parser`,
+described further below. It may be useful to create a distinct class, `<Parsername><Mainfiletype>Parser`,
 for dealing with various filetypes that may be parsed throughout the entirety of the routine.
+However, in the simplest case of a single file type parsed, the entire parser can of course be
+implemented within a single class.
 
 In the following, we will walk through the layout of the `<Parsername>Parser` class. First,
 every parser class should have a "main" function called `parse()`, which will be called by NOMAD
 when the appropriate mainfile is found:
 
+<!-- TODO Add comments to all this code  -->
 ```python
 def parse(self, filepath, archive, logger):
 
@@ -128,12 +146,13 @@ def parse(self, filepath, archive, logger):
     self.parse_workflow()
 ```
 
-Then, the individual functions to populate that various metainfo sections can be defined:
+Then, the individual functions to populate that various MetaInfo sections can be defined:
 
 ```python
 def parse_calculation(self):
     sec_run = self.archive.run[-1]
     sec_calc = sec_run.m_create(Calculation)
+
     # populate calculation metainfo
     # ...
 
@@ -159,3 +178,5 @@ def parse_workflow(self):
     # populate workflow metainfo
     # ...
 ```
+
+For more information, see [Examples - populating the NOMAD archive ](references/examples_populating_archive.md).

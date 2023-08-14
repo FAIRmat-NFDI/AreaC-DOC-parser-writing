@@ -73,7 +73,7 @@ The following are typical files found within a parser source directory:
         m_env = Environment()
         m_env.m_add_sub_section(Environment.packages, <parsername>.m_package)
 
-- `metainfo/<parser_name>.py` - contains [code-specific metadata definitions](code_specific_metainfo.md).
+- `metainfo/<parser_name>.py` - contains [code-specific metadata definitions](creating_new_metainfo.md#code-specific-metainfo).
 
 - `nomad_plugin.yaml`
 
