@@ -1,0 +1,10 @@
+# Environments
+.env
+.venv
+.*env/
+.pyenv*/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
