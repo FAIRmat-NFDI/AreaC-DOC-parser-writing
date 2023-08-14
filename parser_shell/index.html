@@ -1,0 +1,693 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="NOMAD documentation on how to write and extend parsers.
+">
+      
+      
+        <meta name="author" content="FAIRmat consortium">
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../computational/">
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Creating the shell for your parser - NOMAD Parser Writing Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Titillium Web";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="#2A4CDF" data-md-color-accent="#008A67">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#creating-the-shell-for-your-parser" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NOMAD Parser Writing Documentation" class="md-header__button md-logo" aria-label="NOMAD Parser Writing Documentation" data-md-component="logo">
+      
+  <img src="../assets/nomad-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NOMAD Parser Writing Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Creating the shell for your parser
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NOMAD Parser Writing Documentation" class="md-nav__button md-logo" aria-label="NOMAD Parser Writing Documentation" data-md-component="logo">
+      
+  <img src="../assets/nomad-logo.png" alt="logo">
+
+    </a>
+    NOMAD Parser Writing Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Creating the shell for your parser
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Creating the shell for your parser
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parser-files" class="md-nav__link">
+    Parser files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-into-nomads-parser-matching-interface" class="md-nav__link">
+    Integration into NOMAD's parser-matching interface
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../computational/" class="md-nav__link">
+        Parser structure for computation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser_tests/" class="md-nav__link">
+        Creating parser tests
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../creating_new_metainfo/" class="md-nav__link">
+        Creating new metainfo
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          References
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/quick_parser_setup/" class="md-nav__link">
+        Quick Start - parser setup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/quick_installing_nomad_dev/" class="md-nav__link">
+        Quick Start - installing a development version of NOMAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/quick_NOMAD_best_practices/" class="md-nav__link">
+        Quick Start - best practices for NOMAD development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/examples_parser_matching/" class="md-nav__link">
+        Examples - NOMAD's parser-matching interface
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/examples_populating_archive/" class="md-nav__link">
+        Examples - populating the NOMAD archive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/standard_workflows/" class="md-nav__link">
+        Standard workflows in NOMAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/advanced_new_parser_project/" class="md-nav__link">
+        Advanced - creating a new parser project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/old_docs/" class="md-nav__link">
+        Old Docs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parser-files" class="md-nav__link">
+    Parser files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-into-nomads-parser-matching-interface" class="md-nav__link">
+    Integration into NOMAD's parser-matching interface
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="creating-the-shell-for-your-parser">Creating the shell for your parser<a class="headerlink" href="#creating-the-shell-for-your-parser" title="Permanent link">&para;</a></h1>
+<p>First, create a directory for your parser under the relevant parser project directory:</p>
+<div class="highlight"><pre><span></span><code>cd dependencies/parsers/&lt;parserproject&gt;
+mkdir &lt;parsername&gt;
+</code></pre></div>
+<p>In the following please note the naming conventions:</p>
+<ul>
+<li>
+<p>&lt;parsername&gt; - flat case, e.g., quantumespresso</p>
+</li>
+<li>
+<p>&lt;ParserName&gt; - Pascal case, e.g., QuantumEspresso</p>
+</li>
+<li>
+<p>&lt;parser_name&gt; - snake case, e.g., quantum_espresso</p>
+</li>
+<li>
+<p>&lt;PARSERNAME&gt; - upper flat case, e.g., QUANTUMESPRESSO</p>
+</li>
+</ul>
+<h3 id="parser-files">Parser files<a class="headerlink" href="#parser-files" title="Permanent link">&para;</a></h3>
+<p>In the following, &lt;license&gt; represents the insertion of the following license agreement statement:</p>
+<div class="highlight"><pre><span></span><code>#
+# Copyright The NOMAD Authors.
+#
+# This file is part of NOMAD.
+# See https://nomad-lab.eu for further info.
+#
+# Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+</code></pre></div>
+<p>The following are typical files found within a parser source directory:</p>
+<ul>
+<li>
+<p><code>__init__.py</code></p>
+<div class="highlight"><pre><span></span><code>&lt;license&gt;
+from .parser import &lt;ParserName&gt;Parser
+</code></pre></div>
+</li>
+<li>
+<p><code>__main__.py</code></p>
+<div class="highlight"><pre><span></span><code>&lt;license&gt;
+import sys
+import json
+import logging
+
+from nomad.utils import configure_logging
+from nomad.datamodel import EntryArchive
+from atomisticparsers.&lt;parsername&gt; import &lt;ParserName&gt;Parser
+
+if __name__ == &quot;__main__&quot;:
+    configure_logging(console_log_level=logging.DEBUG)
+    archive = EntryArchive()
+    &lt;ParserName&gt;Parser().parse(sys.argv[1], archive, logging)
+    json.dump(archive.m_to_dict(), sys.stdout, indent=2)
+</code></pre></div>
+</li>
+<li>
+<p><code>metainfo/__init__.py</code></p>
+<div class="highlight"><pre><span></span><code>&lt;license&gt;
+from nomad.metainfo import Environment
+
+from . import &lt;parsername&gt;
+
+m_env = Environment()
+m_env.m_add_sub_section(Environment.packages, &lt;parsername&gt;.m_package)
+</code></pre></div>
+</li>
+<li>
+<p><code>metainfo/&lt;parser_name&gt;.py</code> - contains <a href="../creating_new_metainfo/#code-specific-metainfo">code-specific metadata definitions</a>.</p>
+</li>
+<li>
+<p><code>nomad_plugin.yaml</code></p>
+<div class="highlight"><pre><span></span><code>code_category: &lt;Parserproject&gt; code
+code_homepage: &lt;&gt;
+code_name: &lt;PARSERNAME&gt;
+metadata:
+codeCategory: &lt;Parserproject&gt; code
+codeLabel: &lt;PARSERNAME&gt;
+codeLabelStyle: All in capitals
+codeName: &lt;parsername&gt;
+codeUrl: &lt;&gt;
+parserDirName: dependencies/parsers/&lt;parserproject&gt;/&lt;parserproject&gt;parsers/parsername/
+parserGitUrl: https://github.com/nomad-coe/&lt;parserproject&gt;-parsers.git
+parserSpecific: &#39;&#39;
+preamble: &#39;&#39;
+status: production
+tableOfFiles: &#39;&#39;
+name: parsers/&lt;parsername&gt;
+parser_class_name: &lt;parserproject&gt;parsers.&lt;parsername&gt;.parser.&lt;ParserName&gt;Parser
+python_package: &lt;parserproject&gt;parsers.&lt;parsername&gt;
+</code></pre></div>
+</li>
+<li>
+<p><code>parser.py</code> - the <a href="../computational/">parser source code</a>.</p>
+</li>
+<li>
+<p><code>README.md</code> - a short description of the functionality of this parser.</p>
+</li>
+</ul>
+<h3 id="integration-into-nomads-parser-matching-interface">Integration into NOMAD's parser-matching interface<a class="headerlink" href="#integration-into-nomads-parser-matching-interface" title="Permanent link">&para;</a></h3>
+<p>The <code>nomad_plugin.yaml</code> file enables the parser to be recognized as a plugin to the NOMAD software.
+However, in order for NOMAD to identify that it should use this parser, we still need to add
+configuration details within NOMAD's parser-matching interface. These options are specified within
+the plugins options (<code>plugins = Plugins(options={}))</code>)  in the file <code>nomad/config/__init__.py</code>.
+There are many examples to follow here. In short, we need to create a dictionary key within <code>options</code>
+for our new parser:</p>
+<div class="highlight"><pre><span></span><code>&#39;parsers/&lt;parsername&gt;&#39;: Parser(
+    python_package=&#39;&lt;parserproject&gt;parsers.&lt;parsername&gt;&#39;,
+    &lt;args&gt;
+    )
+</code></pre></div>
+<p>Here, <code>&lt;args&gt;</code> can be one or several of the following:</p>
+<ul>
+<li><code>mainfile_name_re=</code> - regex string for matching mainfile name</li>
+<li><code>mainfile_contents_re=</code> - regex string for matching mainfile contents</li>
+<li><code>mainfile_mime_re=</code> -</li>
+<li><code>supported_compressions=</code> -</li>
+<li><code>mainfile_alternative=</code> -</li>
+<li><code>mainfile_binary_header_re=</code> -</li>
+<li><code>mainfile_contents_dict={'__has_all_keys': ['&lt;key1&gt;', '&lt;key2&gt;'}),</code></li>
+<li><code>parser_as_interface=</code> -</li>
+</ul>
+<p>You can find further information about this topic here: <a href="../references/examples_parser_matching/">Examples of parser-matching</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
